@@ -6,9 +6,7 @@
   <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
 </p>
 
-C++ SDK for Tell — product analytics and structured logging.
-
-**85 ns per call. Fire-and-forget. Zero external dependencies.**
+C++ SDK for Tell — product analytics and structured logging, [1,000× faster](#performance) than PostHog and Mixpanel.
 
 - **85 ns per call.** Serializes, encodes, and enqueues. Your thread moves on.
 - **Fire & forget.** Synchronous API, background worker thread. Zero I/O blocking.
