@@ -1,0 +1,52 @@
+# .clangd configuration for UserCanal C++ SDK
+# Optimizes Zed editor experience with proper include paths and diagnostics
+
+CompileFlags:
+  Add:
+    - "-std=c++17"
+    - "-Iinclude"
+    - "-Igenerated"
+    - "-I/usr/local/include"
+    - "-I/opt/homebrew/include"
+    - "-I/usr/include/flatbuffers"
+    - "-DUSERCANAL_SDK_VERSION=1.0.0"
+
+Diagnostics:
+  # Strict checking for missing includes to catch real issues
+  MissingIncludes: Strict
+
+  # Don't warn about unused includes - SDK has intentional forward declarations
+  UnusedIncludes: None
+
+  # Suppress warnings for unused parameters in template/virtual functions
+  Suppress:
+    - "unused-parameter"
+    - "unused-private-field"
+
+Index:
+  # Index all headers for better completion
+  Background: Build
+
+  # Standard library indexing
+  StandardLibrary: Yes
+
+InlayHints:
+  # Show parameter names in function calls
+  Parameters: Yes
+
+  # Show deduced types
+  DeducedTypes: Yes
+
+  # Show return types for auto functions
+  TypeNameLimit: 50
+
+Hover:
+  # Show full type information on hover
+  ShowAKA: Yes
+
+Completion:
+  # Include function signatures in completions
+  AllScopes: Yes
+
+  # Include headers in completions
+  IncludeInsertion: Yes

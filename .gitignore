@@ -1,0 +1,36 @@
+# Build
+build/
+*.o
+*.a
+*.so
+*.dylib
+*.dll
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+compile_commands.json
+CTestTestfile.cmake
+install_manifest.txt
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
+.cache/
+
+# Debug
+*.dSYM/
+**/*.dSYM/
+
+# Test/profiling artifacts
+*.gcov
+*.gcda
+*.gcno
+coverage/
+valgrind-*.log
+perf.data*
+callgrind.out*
