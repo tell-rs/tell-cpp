@@ -8,7 +8,7 @@
 #include <iostream>
 
 int main() {
-    auto config = tell::TellConfig::builder("a1b2c3d4e5f60718293a4b5c6d7e8f90")
+    auto config = tell::TellConfig::builder("feed1e11feed1e11feed1e11feed1e11")
         .endpoint("collect.tell.rs:50000")                        // default: collect.tell.rs:50000
         .batch_size(100)                                          // default: 100 events per batch
         .flush_interval(std::chrono::milliseconds(10000))         // default: 10s between flushes

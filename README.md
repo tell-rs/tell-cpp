@@ -36,7 +36,7 @@ cmake --build build
 
 int main() {
     auto client = tell::Tell::create(
-        tell::TellConfig::production("a1b2c3d4e5f60718293a4b5c6d7e8f90")
+        tell::TellConfig::production("feed1e11feed1e11feed1e11feed1e11")
     );
 
     // Track events
@@ -85,13 +85,14 @@ cmake --build build
 #include "tell/tell.hpp"
 
 // Production — collect.tell.rs:50000, batch=100, flush=10s
-auto config = tell::TellConfig::production("a1b2c3d4e5f60718293a4b5c6d7e8f90");
+auto config = tell::TellConfig::production("feed1e11feed1e11feed1e11feed1e11");
 
 // Development — localhost:50000, batch=10, flush=2s
-auto config = tell::TellConfig::development("a1b2c3d4e5f60718293a4b5c6d7e8f90");
+auto config = tell::TellConfig::development("feed1e11feed1e11feed1e11feed1e11");
 
 // Custom — see examples/config.cpp for all builder options
-auto config = tell::TellConfig::builder("a1b2c3d4e5f60718293a4b5c6d7e8f90")
+auto config = tell::TellConfig::builder("feed1e11feed1e11feed1e11feed1e11")
+    .service("my-backend")                // stamped on every event and log
     .endpoint("collect.internal:50000")
     .on_error([](const tell::TellError& e) {
         std::cerr << "[Tell] " << e.what() << std::endl;

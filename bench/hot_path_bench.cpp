@@ -9,7 +9,7 @@ using namespace tell;
 // Non-routable endpoint — worker spawns but never connects.
 // Large batch size + long flush interval prevent auto-flush during bench.
 static std::unique_ptr<Tell> make_client() {
-    auto config = TellConfig::builder("a1b2c3d4e5f60718293a4b5c6d7e8f90")
+    auto config = TellConfig::builder("feed1e11feed1e11feed1e11feed1e11")
         .endpoint("192.0.2.1:50000")
         .batch_size(100000)
         .flush_interval(std::chrono::milliseconds(3600000))

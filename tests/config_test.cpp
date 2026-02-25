@@ -7,7 +7,7 @@
 using namespace tell;
 
 TEST(ConfigTest, ValidApiKey) {
-    auto config = TellConfig::production("a1b2c3d4e5f60718293a4b5c6d7e8f90");
+    auto config = TellConfig::production("feed1e11feed1e11feed1e11feed1e11");
     EXPECT_EQ(config.endpoint(), "collect.tell.rs:50000");
     EXPECT_EQ(config.batch_size(), 100u);
     EXPECT_EQ(config.max_retries(), 3u);
@@ -26,14 +26,14 @@ TEST(ConfigTest, EmptyApiKey) {
 }
 
 TEST(ConfigTest, DevelopmentPreset) {
-    auto config = TellConfig::development("a1b2c3d4e5f60718293a4b5c6d7e8f90");
+    auto config = TellConfig::development("feed1e11feed1e11feed1e11feed1e11");
     EXPECT_EQ(config.endpoint(), "localhost:50000");
     EXPECT_EQ(config.batch_size(), 10u);
     EXPECT_EQ(config.flush_interval(), std::chrono::milliseconds(2000));
 }
 
 TEST(ConfigTest, ProductionDefaults) {
-    auto config = TellConfig::production("a1b2c3d4e5f60718293a4b5c6d7e8f90");
+    auto config = TellConfig::production("feed1e11feed1e11feed1e11feed1e11");
     EXPECT_EQ(config.batch_size(), 100u);
     EXPECT_EQ(config.flush_interval(), std::chrono::milliseconds(10000));
     EXPECT_EQ(config.max_retries(), 3u);
@@ -42,7 +42,7 @@ TEST(ConfigTest, ProductionDefaults) {
 }
 
 TEST(ConfigTest, BuilderCustomValues) {
-    auto config = TellConfig::builder("a1b2c3d4e5f60718293a4b5c6d7e8f90")
+    auto config = TellConfig::builder("feed1e11feed1e11feed1e11feed1e11")
         .endpoint("custom:9000")
         .batch_size(50)
         .flush_interval(std::chrono::milliseconds(5000))
@@ -60,17 +60,17 @@ TEST(ConfigTest, BuilderCustomValues) {
 }
 
 TEST(ConfigTest, ApiKeyDecodedCorrectly) {
-    auto config = TellConfig::production("a1b2c3d4e5f60718293a4b5c6d7e8f90");
+    auto config = TellConfig::production("feed1e11feed1e11feed1e11feed1e11");
     auto bytes = config.api_key_bytes();
-    EXPECT_EQ(bytes[0], 0xa1);
-    EXPECT_EQ(bytes[1], 0xb2);
-    EXPECT_EQ(bytes[2], 0xc3);
-    EXPECT_EQ(bytes[15], 0x90);
+    EXPECT_EQ(bytes[0], 0xfe);
+    EXPECT_EQ(bytes[1], 0xed);
+    EXPECT_EQ(bytes[2], 0x1e);
+    EXPECT_EQ(bytes[15], 0x11);
 }
 
 TEST(ConfigTest, OnErrorCallback) {
     bool called = false;
-    auto config = TellConfig::builder("a1b2c3d4e5f60718293a4b5c6d7e8f90")
+    auto config = TellConfig::builder("feed1e11feed1e11feed1e11feed1e11")
         .on_error([&called](const TellError&) { called = true; })
         .build();
 

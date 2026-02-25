@@ -29,6 +29,11 @@ TellConfig TellConfig::development(const std::string& api_key) {
 TellConfigBuilder::TellConfigBuilder(const std::string& api_key)
     : api_key_(api_key) {}
 
+TellConfigBuilder& TellConfigBuilder::service(std::string service) {
+    config_.service_ = std::move(service);
+    return *this;
+}
+
 TellConfigBuilder& TellConfigBuilder::endpoint(std::string endpoint) {
     config_.endpoint_ = std::move(endpoint);
     return *this;

@@ -152,10 +152,15 @@ void Worker::flush_events() {
     std::vector<encoding::EventParams> params;
     params.reserve(events.size());
 
+    const auto& svc = config_.service();
+    static const std::string default_service = "app";
+    const auto& resolved_svc = svc.empty() ? default_service : svc;
     for (const auto& e : events) {
         encoding::EventParams p;
         p.event_type = e.event_type;
         p.timestamp = e.timestamp;
+        p.service = resolved_svc.c_str();
+        p.service_len = resolved_svc.size();
         p.device_id = e.device_id;
         p.session_id = e.session_id;
         if (!e.event_name.empty()) {

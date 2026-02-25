@@ -467,11 +467,17 @@ void Tell::log(LogLevel level, const std::string& message,
     auto payload = merge_json_payload("\"message\":", 10, message,
                                        data_json.empty() ? nullptr : &data_json);
 
+    // Resolve service: explicit param > config-level > "app"
+    const auto& config_svc = inner_->worker->config().service();
+    const std::string& resolved_service = !service.empty() ? service
+        : !config_svc.empty() ? config_svc
+        : ([]() -> const std::string& { static const std::string def = "app"; return def; })();
+
     QueuedLog entry;
     entry.level = level;
     entry.timestamp = now_ms();
     inner_->read_session_id(entry.session_id);
-    entry.service = service;
+    entry.service = resolved_service;
     entry.payload = std::move(payload);
 
     inner_->worker->send_log(std::move(entry));

@@ -79,7 +79,7 @@ static void BM_PipelineFlush(benchmark::State& state) {
 
     NullServer server;
 
-    auto config = TellConfig::builder("a1b2c3d4e5f60718293a4b5c6d7e8f90")
+    auto config = TellConfig::builder("feed1e11feed1e11feed1e11feed1e11")
         .endpoint(server.address)
         .batch_size(scenario.events_per_batch)
         .flush_interval(std::chrono::milliseconds(3600000))
@@ -121,7 +121,7 @@ static void BM_PipelineLogFlush(benchmark::State& state) {
 
     NullServer server;
 
-    auto config = TellConfig::builder("a1b2c3d4e5f60718293a4b5c6d7e8f90")
+    auto config = TellConfig::builder("feed1e11feed1e11feed1e11feed1e11")
         .endpoint(server.address)
         .batch_size(scenario.events_per_batch)
         .flush_interval(std::chrono::milliseconds(3600000))

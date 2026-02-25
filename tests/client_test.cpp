@@ -19,7 +19,7 @@ namespace {
 
 // Helper: create a client with short timeouts, no retries, swallowed errors.
 std::unique_ptr<Tell> make_test_client() {
-    auto config = TellConfig::builder("a1b2c3d4e5f60718293a4b5c6d7e8f90")
+    auto config = TellConfig::builder("feed1e11feed1e11feed1e11feed1e11")
         .endpoint("localhost:19999")
         .batch_size(10)
         .flush_interval(std::chrono::milliseconds(100))
@@ -172,7 +172,7 @@ TEST(ClientTest, ResetSession) {
 
 TEST(ClientTest, ValidationErrors) {
     std::atomic<int> error_count{0};
-    auto config = TellConfig::builder("a1b2c3d4e5f60718293a4b5c6d7e8f90")
+    auto config = TellConfig::builder("feed1e11feed1e11feed1e11feed1e11")
         .endpoint("localhost:19999")
         .max_retries(0)
         .network_timeout(std::chrono::milliseconds(500))
@@ -284,7 +284,7 @@ TEST(ClientTest, ConcurrentFlush) {
 // ==================== Timeout ====================
 
 TEST(ClientTest, FlushReturnsWithinTimeout) {
-    auto config = TellConfig::builder("a1b2c3d4e5f60718293a4b5c6d7e8f90")
+    auto config = TellConfig::builder("feed1e11feed1e11feed1e11feed1e11")
         .endpoint("localhost:19999")
         .max_retries(0)
         .network_timeout(std::chrono::milliseconds(200))
@@ -304,7 +304,7 @@ TEST(ClientTest, FlushReturnsWithinTimeout) {
 }
 
 TEST(ClientTest, CloseReturnsWithinTimeout) {
-    auto config = TellConfig::builder("a1b2c3d4e5f60718293a4b5c6d7e8f90")
+    auto config = TellConfig::builder("feed1e11feed1e11feed1e11feed1e11")
         .endpoint("localhost:19999")
         .max_retries(0)
         .network_timeout(std::chrono::milliseconds(200))

@@ -17,7 +17,7 @@
 #include <iostream>
 #include <string>
 
-static const char* API_KEY = "4cc3542f199d280d29eace8497ed062f";
+static const char* API_KEY = "feed1e11feed1e11feed1e11feed1e11";
 static const char* USER    = "e2e_user_cpp";
 
 static void send(const char* label) {
@@ -39,6 +39,7 @@ int main() {
         auto client = tell::Tell::create(
             tell::TellConfig::builder(API_KEY)
                 .endpoint(endpoint)
+                .service("cpp-e2e")
                 .batch_size(10)
                 .on_error([](const tell::TellError& err) {
                     std::cerr << "  !! " << err.what() << std::endl;

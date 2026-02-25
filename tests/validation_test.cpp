@@ -46,9 +46,9 @@ TEST(ValidationTest, LongLogMessage) {
 }
 
 TEST(ValidationTest, ValidApiKey) {
-    auto bytes = validate_and_decode_api_key("a1b2c3d4e5f60718293a4b5c6d7e8f90");
-    EXPECT_EQ(bytes[0], 0xa1);
-    EXPECT_EQ(bytes[1], 0xb2);
+    auto bytes = validate_and_decode_api_key("feed1e11feed1e11feed1e11feed1e11");
+    EXPECT_EQ(bytes[0], 0xfe);
+    EXPECT_EQ(bytes[1], 0xed);
 }
 
 TEST(ValidationTest, ShortApiKey) {

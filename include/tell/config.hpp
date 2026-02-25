@@ -25,6 +25,7 @@ public:
     static TellConfig development(const std::string& api_key);
 
     const std::array<uint8_t, 16>& api_key_bytes() const noexcept { return api_key_bytes_; }
+    const std::string& service() const noexcept { return service_; }
     const std::string& endpoint() const noexcept { return endpoint_; }
     size_t batch_size() const noexcept { return batch_size_; }
     std::chrono::milliseconds flush_interval() const noexcept { return flush_interval_; }
@@ -37,6 +38,7 @@ private:
     friend class TellConfigBuilder;
 
     std::array<uint8_t, 16> api_key_bytes_{};
+    std::string service_;
     std::string endpoint_ = "collect.tell.rs:50000";
     size_t batch_size_ = 100;
     std::chrono::milliseconds flush_interval_{10000};
@@ -51,6 +53,7 @@ class TellConfigBuilder {
 public:
     explicit TellConfigBuilder(const std::string& api_key);
 
+    TellConfigBuilder& service(std::string service);
     TellConfigBuilder& endpoint(std::string endpoint);
     TellConfigBuilder& batch_size(size_t size);
     TellConfigBuilder& flush_interval(std::chrono::milliseconds interval);

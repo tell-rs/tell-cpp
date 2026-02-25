@@ -33,6 +33,8 @@ struct QueuedEvent {
     uint8_t session_id[16] = {};
     std::string event_name;
     std::vector<uint8_t> payload;
+    // Note: service is set at config level, not per-event.
+    // The worker reads it from config_ when building EventParams.
 };
 
 // Queued log entry ready to be encoded.
@@ -69,6 +71,9 @@ public:
     void send_log(QueuedLog log);
     std::future<void> send_flush();
     std::future<void> send_close();
+
+    // Access config (for service resolution in client).
+    const TellConfig& config() const noexcept { return config_; }
 
 private:
     void run();

@@ -78,6 +78,8 @@ inline void patch_u32(std::vector<uint8_t>& buf, size_t pos, uint32_t value) {
 struct EventParams {
     EventType event_type = EventType::Unknown;
     uint64_t timestamp = 0;
+    const char* service = nullptr;
+    size_t service_len = 0;
     const uint8_t* device_id = nullptr;   // 16 bytes or nullptr
     const uint8_t* session_id = nullptr;  // 16 bytes or nullptr
     const char* event_name = nullptr;
@@ -90,25 +92,28 @@ struct EventParams {
 inline void encode_event_into(std::vector<uint8_t>& buf, const EventParams& params) {
     bool has_device_id = params.device_id != nullptr;
     bool has_session_id = params.session_id != nullptr;
+    bool has_service = params.service != nullptr;
     bool has_event_name = params.event_name != nullptr;
     bool has_payload = params.payload != nullptr && params.payload_len > 0;
 
-    // VTable: size(u16) + table_size(u16) + 6 field slots = 16 bytes
-    // Table: soffset(4) + 4 offsets(16) + timestamp(8) + event_type(1) + pad(3) = 32
+    // VTable: size(u16) + table_size(u16) + 7 field slots = 18 bytes (+ 2 pad)
+    // Table: soffset(4) + 4 offsets(16) + timestamp(8) + event_type(1) + pad(3) + service_off(4) = 36
 
     size_t root_pos = buf.size();
     buf.insert(buf.end(), 4, 0); // root offset placeholder
 
     // VTable
     size_t vtable_start = buf.size();
-    write_u16(buf, 16);                                          // vtable_size = 4 + 6*2
-    write_u16(buf, 32);                                          // table_size = 4 + 28
+    write_u16(buf, 18);                                          // vtable_size = 4 + 7*2
+    write_u16(buf, 36);                                          // table_size = 4 + 32
     write_u16(buf, 28);                                          // field 0: event_type at +28
     write_u16(buf, 20);                                          // field 1: timestamp at +20
-    write_u16(buf, has_device_id ? 4 : 0);                       // field 2: device_id
-    write_u16(buf, has_session_id ? 8 : 0);                      // field 3: session_id
-    write_u16(buf, has_event_name ? 12 : 0);                     // field 4: event_name
-    write_u16(buf, has_payload ? 16 : 0);                        // field 5: payload
+    write_u16(buf, has_service ? 32 : 0);                        // field 2: service at +32
+    write_u16(buf, has_device_id ? 4 : 0);                       // field 3: device_id
+    write_u16(buf, has_session_id ? 8 : 0);                      // field 4: session_id
+    write_u16(buf, has_event_name ? 12 : 0);                     // field 5: event_name
+    write_u16(buf, has_payload ? 16 : 0);                        // field 6: payload
+    buf.insert(buf.end(), 2, 0);                                 // vtable alignment padding
 
     // Table
     size_t table_start = buf.size();
@@ -127,6 +132,9 @@ inline void encode_event_into(std::vector<uint8_t>& buf, const EventParams& para
     buf.push_back(static_cast<uint8_t>(params.event_type));
     buf.insert(buf.end(), 3, 0); // padding
 
+    size_t service_off_pos = buf.size();
+    write_u32(buf, 0);
+
     // Vectors and strings
     align4(buf);
 
@@ -139,6 +147,12 @@ inline void encode_event_into(std::vector<uint8_t>& buf, const EventParams& para
     size_t session_id_start = 0;
     if (has_session_id) {
         session_id_start = write_byte_vector(buf, params.session_id, UUID_LENGTH);
+        align4(buf);
+    }
+
+    size_t service_start = 0;
+    if (has_service) {
+        service_start = write_string(buf, params.service, params.service_len);
         align4(buf);
     }
 
@@ -158,6 +172,7 @@ inline void encode_event_into(std::vector<uint8_t>& buf, const EventParams& para
 
     if (has_device_id)  patch_offset(buf, device_id_off_pos, device_id_start);
     if (has_session_id) patch_offset(buf, session_id_off_pos, session_id_start);
+    if (has_service)    patch_offset(buf, service_off_pos, service_start);
     if (has_event_name) patch_offset(buf, event_name_off_pos, event_name_start);
     if (has_payload)    patch_offset(buf, payload_off_pos, payload_start);
 }
